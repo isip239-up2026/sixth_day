@@ -35,13 +35,67 @@
 
     {# Студент 1: вывести навыки с уровнем (progress bar) #}
     <h4 class="mt-4">Навыки</h4>
-    <p class="text-muted">Навыки не добавлены.</p>
+    {% with skills=student.studentskills.all %}
+      {% if skills %}
+        {% for student_skill in skills %}
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <div>
+                <strong>{{ student_skill.skill.name }}</strong>
+                <a href="{% url 'skill_filter' student_skill.skill.id %}"
+                   class="badge bg-primary text-decoration-none ms-2"
+                   style="font-size: 0.7rem;">
+                    Найти всех с этим навыком
+                </a>
+              </div>
+              <span class="text-muted">{{ student_skill.level }}/5</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar
+                {% if student_skill.level >= 4 %}bg-success
+                {% elif student_skill.level >= 2 %}bg-primary
+                {% else %}bg-secondary{% endif %}"
+                role="progressbar"
+                style="width:{% widthratio student_skill.level 5 100 %}%"
+                aria-valuenow="{{ student_skill.level }}"
+                aria-valuemin="0"
+                aria-valuemax="5">
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">Навыки не добавлены.</p>
+      {% endif %}
+    {% endwith %}
 
     <hr>
 
     {# Студент 2: вывести проекты карточками #}
     <h4 class="mt-4">Проекты</h4>
-    <p class="text-muted">Проектов пока нет.</p>
+    {% with projects=student.projects.all %}
+      {% if projects %}
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          {% for project in projects %}
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">{{ project.title }}</h5>
+                  <p class="card-text small">{{ project.description|truncatewords:30 }}</p>
+                  {% if project.link %}
+                    <a href="{{ project.link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                      Смотреть проект →
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">Проектов пока нет.</p>
+      {% endif %}
+    {% endwith %}
 
   </div>
 </div>

@@ -39,9 +39,9 @@ class Student(models.Model):
 
 class StudentSkill(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE,
-                                related_name="skills", verbose_name="Студент")
+                                related_name="studentskills", verbose_name="Студент")
     skill   = models.ForeignKey(Skill, on_delete=models.CASCADE,
-                                related_name="student_skills", verbose_name="Навык")
+                                related_name="studentskills", verbose_name="Навык")
     level   = models.IntegerField(default=3, verbose_name="Уровень (1–5)")
 
     class Meta:

@@ -1,0 +1,73 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Студенты со навыком: {{ skill.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        Студенты с навыком: {{ skill.name }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>Найдено:</strong> {{ count }} студент{{ count|pluralize:",а,ов" }}
+                    </div>
+
+                    {% if students %}
+                        <div class="row">
+                            {% for student in students %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <a href="{% url 'main:student_detail' student.id %}" class="text-decoration-none">
+                                                    {{ student.name }}
+                                                </a>
+                                            </h5>
+                                            <p class="card-text text-muted small">
+                                                {% if student.bio %}
+                                                    {{ student.bio|truncatewords:20 }}
+                                                {% else %}
+                                                    Информация отсутствует
+                                                {% endif %}
+                                            </p>
+                                            <div class="mt-2">
+                                                <strong>Другие навыки:</strong><br>
+                                                {% for skill_rel in student.studentskills.all %}
+                                                    <a href="{% url 'main:skill_filter' skill_rel.skill.id %}"
+                                                       class="badge bg-secondary text-decoration-none me-1">
+                                                        {{ skill_rel.skill.name }}
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="card-footer bg-transparent">
+                                            <small class="text-muted">
+                                                Студент
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            Студенты с навыком "{{ skill.name }}" не найдены.
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'main:index' %}" class="btn btn-secondary">
+                            ← Назад к списку студентов
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
