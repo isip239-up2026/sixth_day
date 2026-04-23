@@ -1,0 +1,50 @@
+{% extends "main/base.html" %}
+
+{% block title %}Студенты факультета{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Студенты факультета</h2>
+  {# Студент 6: добавить кнопки сортировки #}
+</div>
+
+{# Студент 6: добавить пагинацию сверху #}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for student in students %}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      {% if student.avatar_url %}
+      <img src="{{ student.avatar_url }}" class="card-img-top"
+           style="height: 200px; object-fit: cover;" alt="{{ student.name }}">
+      {% else %}
+      <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+           style="height: 200px; font-size: 3rem;">
+        {{ student.name|first }}
+      </div>
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{% url 'student_detail' student.id %}" class="text-decoration-none text-dark">
+            {{ student.name }}
+          </a>
+        </h5>
+        <p class="text-muted mb-2">
+          <small>{{ student.group }}</small>
+        </p>
+        <p class="card-text">{{ student.bio|truncatewords:15 }}</p>
+
+        {# Студент 4: добавить навыки-бейджи #}
+        {# Студент 8: добавить кнопку «Сравнить» #}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col">
+    <p class="text-muted">Студентов пока нет.</p>
+  </div>
+  {% endfor %}
+</div>
+
+{# Студент 6: добавить пагинацию снизу #}
+{% endblock %}
