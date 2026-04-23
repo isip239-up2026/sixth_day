@@ -1,0 +1,46 @@
+{% extends "main/base.html" %}
+
+{% block title %}{{ project.title }} — Проект{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  <a href="{% url 'student_detail' project.student.id %}" class="text-decoration-none">
+     Назад к профилю {{ project.student.name }}
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h1 class="card-title mb-3">{{ project.title }}</h1>
+    
+    <p class="mb-3">
+      <strong>Автор:</strong> 
+      <a href="{% url 'student_detail' project.student.id %}" class="text-decoration-none">
+        {{ project.student.name }}
+      </a>
+      ({{ project.student.group }})
+    </p>
+    
+    <p class="mb-3">
+      <strong>Стек технологий:</strong> {{ project.tech_stack }}
+    </p>
+    
+    <p class="mb-3">
+      <strong>Дата добавления:</strong> {{ project.created_at|date:"d.m.Y" }}
+    </p>
+    
+    {% if project.github_url %}
+    <p class="mb-3">
+      <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-dark">
+        GitHub
+      </a>
+    </p>
+    {% endif %}
+    
+    <hr>
+    
+    <h4 class="mb-3">Описание</h4>
+    <p class="card-text">{{ project.description }}</p>
+  </div>
+</div>
+{% endblock %}

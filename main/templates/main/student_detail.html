@@ -33,15 +33,55 @@
 
     <hr>
 
-    {# Студент 1: вывести навыки с уровнем (progress bar) #}
     <h4 class="mt-4">Навыки</h4>
+    {% for student_skill in student.skills.all %}
+    <div class="mb-3">
+      <div class="d-flex justify-content-between">
+        <span>{{ student_skill.skill.name }}</span>
+        <span>{{ student_skill.level }}/5</span>
+      </div>
+      <div class="progress" style="height: 8px;">
+        <div class="progress-bar" role="progressbar"
+             style="width: {{ student_skill.level_percent }}%;"
+             aria-valuenow="{{ student_skill.level_percent }}"
+             aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+    {% empty %}
     <p class="text-muted">Навыки не добавлены.</p>
+    {% endfor %}
 
     <hr>
 
-    {# Студент 2: вывести проекты карточками #}
     <h4 class="mt-4">Проекты</h4>
+    {% if projects %}
+    <div class="row">
+      {% for project in projects %}
+      <div class="col-md-6 mb-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{% url 'project_detail' project.id %}" class="text-decoration-none">
+                {{ project.title }}
+              </a>
+            </h5>
+            <p class="card-text small">{{ project.description|truncatewords:15 }}</p>
+            <p class="card-text">
+              <small class="text-muted"><strong>Стек:</strong> {{ project.tech_stack }}</small>
+            </p>
+            {% if project.github_url %}
+            <a href="{{ project.github_url }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+              GitHub
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
     <p class="text-muted">Проектов пока нет.</p>
+    {% endif %}
 
   </div>
 </div>
